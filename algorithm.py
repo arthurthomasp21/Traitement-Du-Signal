@@ -214,14 +214,10 @@ class Matching:
 if __name__ == '__main__':
 
     encoder = Encoding()
-    fs, s = read('C:\\Users\\arthu\\Desktop\\Cours\\Info\\-Projet-TDS\\samples\\Cash Machine - Anno Domini Beats.wav')
+    fs, s = read('C:\\Users\\arthu\\Desktop\\Cours\\Info\\Traitement-Du-Signal\\samples\\Cash Machine - Anno Domini Beats.wav')
     encoder.process(fs, s)
     encoder.display_spectrogram(display_anchors=True)
-
-
-
-print(len(encoder.frequencies), encoder.max)
-
-plt.figure()
-plt.scatter(encoder.max[:,0], encoder.max[:,1], s=5)
-plt.show()
+    print(len(encoder.frequencies), encoder.max)
+    plt.figure()
+    plt.scatter(encoder.max[:,0], encoder.max[:,1], s=5)
+    plt.show()

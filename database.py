@@ -19,7 +19,7 @@ from algorithm import *
 # ----------------------------------------------
 if __name__ == '__main__':
 
-    folder = './samples/'
+    folder = 'C:\\Users\\arthu\\Desktop\\Cours\\Info\\Traitement-Du-Signal\\samples'
 
     # 1: Load the audio files
     import os
@@ -27,11 +27,18 @@ if __name__ == '__main__':
     audiofiles = [item for item in audiofiles if item[-4:] =='.wav']
 
     # 2: Set the parameters of the encoder
-    # Insert your code here
+    wsize = 128
+    ovsize = 32
 
     # 3: Construct the database
     database = []
-    # Insert your code here
+    for audiofile in audiofiles :
+        encoder = Encoding(wsize, ovsize)
+        fs, s = read(audiofile)
+        encoder.process(fs, s)
+        encoder.display_spectrogram(display_anchors=True)
+        database.append(encoder)
+
 
     # 4: Save the database
     with open('songs.pickle', 'wb') as handle:
