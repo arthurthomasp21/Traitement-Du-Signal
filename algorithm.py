@@ -81,7 +81,7 @@ class Encoding :
       self.fs = fs
       self.s = s
       self.frequencies, self.times, self.spectrogram = spectrogram(self.s, self.fs, nperseg = self.wsize, noverlap = self.ovsize)
-      self.max = peak_local_max(self.spectrogram, min_distance=10, exclude_border = False)
+      self.max = peak_local_max(self.spectrogram, min_distance=5, exclude_border = False)
 
       delta_t = 50
       delta_f = 500
@@ -214,7 +214,8 @@ class Matching:
 if __name__ == '__main__':
 
     encoder = Encoding()
-    fs, s = read('C:\\Users\\arthu\\Desktop\\Cours\\Info\\Traitement-Du-Signal\\samples\\Cash Machine - Anno Domini Beats.wav')
+   # fs, s = read('C:\\Users\\arthu\\Desktop\\Cours\\Info\\Traitement-Du-Signal\\samples\\Cash Machine - Anno Domini Beats.wav')
+    fs, s = fs, s = read('C:\\Users\\pierr\\Documents\\année scolaire 2021-2022\\cours\\UE 21 maths\\UE 21.3 Signal\\Traitement-Du-Signal\\samples\\Cash Machine - Anno Domini Beats.wav')
     encoder.process(fs, s)
     encoder.display_spectrogram(display_anchors=True)
     print(len(encoder.frequencies), encoder.max)
