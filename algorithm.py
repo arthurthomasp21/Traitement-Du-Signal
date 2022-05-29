@@ -4,6 +4,7 @@ Algorithm implementation
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy
 
 from matplotlib import colors
 from scipy.io.wavfile import read
@@ -42,7 +43,6 @@ class Encoding :
       - etc.
       All these parameters should be kept as attributes of the class.
       """
-      
       self.wsize = wsize
       self.ovsize = ovsize
 
@@ -81,9 +81,17 @@ class Encoding :
       self.fs = fs
       self.s = s
       self.frequencies, self.times, self.spectrogram = spectrogram(self.s, self.fs, nperseg = self.wsize, noverlap = self.ovsize)
-      self.max = peak_local_max(self.spectrogram, exclude_border = False)
-      
+      self.max = peak_local_max(self.spectrogram, min_distance=10, exclude_border = False)
 
+      delta_t = 50
+      delta_f = 500
+      hashes = []
+      for anchor in self.max:
+         for target in self.max :
+            if anchor != target and abs(anchor[0]-target[0]) < delta_t and abs(anchor[1]-target[1]) < delta_f :
+               hashes.append( {'t' : anchor[0], 'hash' : np.array([anchor[0]-target[0], anchor[1], target[1]])} )
+      self.hash = hashes
+      
 
    def display_spectrogram(self, display_anchors=True):
       #attention pour afficher le spectrogramme mettre en échelle log
@@ -207,10 +215,13 @@ if __name__ == '__main__':
 
     encoder = Encoding()
     fs, s = read('C:\\Users\\arthu\\Desktop\\Cours\\Info\\-Projet-TDS\\samples\\Cash Machine - Anno Domini Beats.wav')
-    encoder.process(fs, s[:900000])
+    encoder.process(fs, s)
     encoder.display_spectrogram(display_anchors=True)
 
 
 
+print(len(encoder.frequencies), encoder.max)
 
-
+plt.figure()
+plt.scatter(encoder.max[:,0], encoder.max[:,1], s=5)
+plt.show()
