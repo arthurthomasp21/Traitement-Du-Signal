@@ -26,7 +26,7 @@ class Encoding :
    - create hashes using these maxima
  """
 
-   def __init__(self, path):
+   def __init__(self, wsize = 128, ovsize = 32):
 
       """
       Class constructor
@@ -43,10 +43,8 @@ class Encoding :
       All these parameters should be kept as attributes of the class.
       """
       
-      self.path = path
-      self.fe, self.data = read(self.path)
-      self.wsize = 128
-      self.ovsize = 32
+      self.wsize = wsize
+      self.ovsize = ovsize
 
    def process(self, fs, s): 
        
@@ -82,8 +80,7 @@ class Encoding :
       """
       self.fs = fs
       self.s = s
-      self.times = spectrogram(self.s, self.fs, nperseg = self.wsize, noverlap = self.ovsize)[0]
-      self.spectrogram = spectrogram(self.s, self.fs, nperseg = self.wsize, noverlap = self.ovsize)[1]
+      self.frequencies, self.times, self.spectrogram = spectrogram(self.s, self.fs, nperseg = self.wsize, noverlap = self.ovsize)
       self.max = peak_local_max(self.spectrogram, exclude_border = False)
       
 
@@ -93,11 +90,10 @@ class Encoding :
       """
       Display the spectrogram of the audio signal
       """
-      f,t, spec = spectrogram(self.data, self.fe, nperseg = self.wsize, noverlap=self.ovsize )
-      plt.pcolormesh(t, f, spec, norm=colors.LogNorm()) 
+      plt.pcolormesh(self.times, self.frequencies, self.spectrogram, norm=colors.LogNorm()) 
       plt.ylabel('Frequency $f$(Hz)')
       plt.xlabel('Time $t$(s)')
-      plt.title(f"spectrogramm\nColor scale : logarithmic\n Beginning: {t[0]}s")
+      plt.title(f"spectrogramm\nColor scale : logarithmic\n Beginning: {self.times[0]}s")
       plt.colorbar()
       plt.show()
 
@@ -206,9 +202,10 @@ class Matching:
 # ----------------------------------------------
 # Run the script
 # ----------------------------------------------
+
 if __name__ == '__main__':
 
-    encoder = Encoding('C:\\Users\\arthu\\Desktop\\Cours\\Info\\-Projet-TDS\\samples\\Cash Machine - Anno Domini Beats.wav')
+    encoder = Encoding()
     fs, s = read('C:\\Users\\arthu\\Desktop\\Cours\\Info\\-Projet-TDS\\samples\\Cash Machine - Anno Domini Beats.wav')
     encoder.process(fs, s[:900000])
     encoder.display_spectrogram(display_anchors=True)
