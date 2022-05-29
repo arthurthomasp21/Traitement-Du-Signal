@@ -86,9 +86,9 @@ class Encoding :
       delta_t = 50
       delta_f = 500
       hashes = []
-      for anchor in self.max:
+      for anchor in self.max :
          for target in self.max :
-            if anchor != target and abs(anchor[0]-target[0]) < delta_t and abs(anchor[1]-target[1]) < delta_f :
+            if abs(anchor[0]-target[0]) < delta_t and abs(anchor[1]-target[1]) < delta_f :
                hashes.append( {'t' : anchor[0], 'hash' : np.array([anchor[0]-target[0], anchor[1], target[1]])} )
       self.hash = hashes
       

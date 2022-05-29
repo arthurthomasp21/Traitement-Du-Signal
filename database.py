@@ -19,7 +19,7 @@ from algorithm import *
 # ----------------------------------------------
 if __name__ == '__main__':
 
-    folder = 'C:\\Users\\arthu\\Desktop\\Cours\\Info\\Traitement-Du-Signal\\samples'
+    folder = '.\\samples\\'
 
     # 1: Load the audio files
     import os
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     database = []
     for audiofile in audiofiles :
         encoder = Encoding(wsize, ovsize)
-        fs, s = read(audiofile)
+        fs, s = read('samples\\'+ audiofile)        
         encoder.process(fs, s)
         encoder.display_spectrogram(display_anchors=True)
         database.append(encoder)
